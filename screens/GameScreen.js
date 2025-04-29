@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Alert, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  FlatList,
+  useWindowDimensions,
+} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Title } from "../components/Title";
 import { NumberContainer } from "../components/NumberContainer";
@@ -22,6 +29,7 @@ export const GameScreen = ({ exclude, game }) => {
   const initialGuess = generateRandomBetween(1, 100, exclude);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [rounds, setRounds] = useState([initialGuess]);
+  const { width, height } = useWindowDimensions();
 
   useEffect(() => {
     if (currentGuess === exclude) {
@@ -59,12 +67,17 @@ export const GameScreen = ({ exclude, game }) => {
   };
   // console.log(rounds);
   const listlen = rounds.length;
+
+  // const deviceMargin = height < 380 ? 4 : 36;
+  const devicePadding = height < 380 ? 4 : 36;
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { padding: devicePadding }]}>
       <Title>Opponent's Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
-        <Text style={styles.text}>Higher Or Lower</Text>
+        <Text style={[styles.text, { padding: height < 380 ? 4 : 36 }]}>
+          Higher Or Lower
+        </Text>
         <View style={styles.buttonContainer}>
           <View style={styles.button}>
             <PrimaryButton onPress={() => nextNumberHandler("lower")}>
@@ -101,6 +114,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 12,
+    alignItems: "center",
   },
   text: {
     color: "white",

@@ -1,11 +1,20 @@
 import { useState } from "react";
-import { TextInput, View, StyleSheet, Alert, Text } from "react-native";
+import {
+  TextInput,
+  View,
+  StyleSheet,
+  Alert,
+  Text,
+  useWindowDimensions,
+} from "react-native";
 import { PrimaryButton } from "../components/PrimaryButton";
 import { Title } from "../components/Title";
 import { Card } from "../components/Card";
 
 export const StartGameScreen = ({ pickedNumber }) => {
   const [enteredNumber, setEnteredNumber] = useState("");
+  const { height } = useWindowDimensions();
+
   const handleChangeNumber = (number) => {
     setEnteredNumber(number);
   };
@@ -26,14 +35,22 @@ export const StartGameScreen = ({ pickedNumber }) => {
     pickedNumber(entereNumber);
   };
 
-  // console.log(enteredNumber);
+  const deviceMargin = height < 380 ? 4 : 60;
+  const devicePadding = height < 380 ? 4 : 8;
+  const inph = height < 380 ? 48 : 60;
+  const fonts = height < 380 ? 24 : 32;
   return (
-    <View style={styles.screen}>
+    <View
+      style={[
+        styles.screen,
+        { marginTop: deviceMargin, padding: devicePadding },
+      ]}
+    >
       <Title>Guess My Number</Title>
       <Card>
         <Text style={styles.text}>Enter A Number</Text>
         <TextInput
-          style={styles.input}
+          style={[styles.input, { height: inph, fontSize: fonts }]}
           maxLength={2}
           keyboardType="number-pad"
           onChangeText={handleChangeNumber}
@@ -57,8 +74,6 @@ export const StartGameScreen = ({ pickedNumber }) => {
 const styles = StyleSheet.create({
   screen: {
     alignItems: "center",
-    marginTop: 96,
-    padding: 16,
     flex: 1,
   },
 
@@ -77,8 +92,6 @@ const styles = StyleSheet.create({
   //   alignItems: "center",
   // },
   input: {
-    height: 60,
-    fontSize: 32,
     borderBottomColor: "yellow",
     borderBottomWidth: 2,
     color: "yellow",
@@ -101,6 +114,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: 16,
     fontFamily: "open-sans",
-    fontSize: 16,
+    // fontSize: 16,
   },
 });
